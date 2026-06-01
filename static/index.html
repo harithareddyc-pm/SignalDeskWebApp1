@@ -2,282 +2,229 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#0a0b0d">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="SignalDesk">
-<meta name="description" content="Nifty 500 daily signal scanner">
 <link rel="manifest" href="/manifest.json">
-<title>SignalDesk</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Cabinet+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet">
+<title>SignalDesk — Swing Signals</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ── RESET & ROOT ─────────────────────────────── */
 :root {
-  --bg:     #0a0b0d;
-  --bg2:    #111318;
-  --bg3:    #181c23;
-  --bg4:    #1f2430;
-  --line:   rgba(255,255,255,0.06);
-  --line2:  rgba(255,255,255,0.11);
-  --ink:    #eeecea;
-  --ink2:   #7a8090;
-  --ink3:   #424856;
-  --g:      #1dbe88;
-  --g2:     rgba(29,190,136,0.14);
-  --g3:     rgba(29,190,136,0.06);
-  --r:      #e8533a;
-  --r2:     rgba(232,83,58,0.14);
-  --r3:     rgba(232,83,58,0.06);
-  --y:      #e8b83a;
-  --y2:     rgba(232,184,58,0.14);
-  --b:      #3a8ee8;
-  --b2:     rgba(58,142,232,0.14);
-  --rad:    12px;
-  --rad-sm: 7px;
-  --font-d: 'Cabinet Grotesk', sans-serif;
-  --font-m: 'Space Mono', monospace;
+  --bg:     #f5f6f8;
+  --bg2:    #ffffff;
+  --bg3:    #f0f2f5;
+  --bg4:    #e8eaed;
+  --line:   rgba(0,0,0,0.07);
+  --line2:  rgba(0,0,0,0.13);
+  --ink:    #1a1d23;
+  --ink2:   #5a6072;
+  --ink3:   #9aa0ad;
+  --g:      #0d9e6e;
+  --g-bg:   #e8f8f3;
+  --g-bd:   #b8ead9;
+  --r:      #d63f26;
+  --r-bg:   #fdecea;
+  --r-bd:   #f5bdb5;
+  --y:      #b87c0a;
+  --y-bg:   #fef8e8;
+  --y-bd:   #f5d98a;
+  --b:      #1a5fc9;
+  --b-bg:   #eaf1fd;
+  --b-bd:   #b0ccf5;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow2: 0 4px 12px rgba(0,0,0,0.1);
+  --font: 'Inter', sans-serif;
+  --rad: 12px; --rad-sm: 8px; --rad-xs: 6px;
 }
-*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
-html { font-size:14px; scroll-behavior:smooth; }
-body {
-  background:var(--bg); color:var(--ink);
-  font-family:var(--font-m);
-  min-height:100vh; min-height:100dvh;
-  overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;
-}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:14px;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased;min-height:100vh}
 
-/* ── HEADER ───────────────────────────────────── */
-header {
-  position:sticky; top:0; z-index:100;
-  background:rgba(10,11,13,0.92);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--line);
-  padding:0 16px;
-  height:56px;
+/* HEADER */
+header{
+  background:var(--bg2); border-bottom:1px solid var(--line);
+  box-shadow:var(--shadow); position:sticky; top:0; z-index:100;
+  padding:0 16px; height:58px;
   display:flex; align-items:center; justify-content:space-between;
 }
-.logo {
-  font-family:var(--font-d); font-size:18px; font-weight:800;
-  letter-spacing:-.03em; line-height:1;
+.logo{font-size:18px;font-weight:800;letter-spacing:-.03em;color:var(--ink)}
+.logo em{color:var(--g);font-style:normal}
+.logo-tag{font-size:10px;color:var(--ink3);letter-spacing:.06em;text-transform:uppercase;margin-top:1px}
+.header-right{display:flex;align-items:center;gap:10px}
+.live-badge{
+  display:flex;align-items:center;gap:5px;
+  background:var(--g-bg);border:1px solid var(--g-bd);
+  border-radius:20px;padding:4px 10px;font-size:11px;color:var(--g);font-weight:600;
 }
-.logo em { color:var(--g); font-style:normal; }
-.logo-sub { font-size:9px; color:var(--ink3); letter-spacing:.1em; text-transform:uppercase; margin-top:2px; font-family:var(--font-m); }
-.header-right { display:flex; align-items:center; gap:8px; }
-.last-scan { font-size:10px; color:var(--ink3); font-family:var(--font-m); text-align:right; line-height:1.5; }
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--g);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ── MAIN LAYOUT ──────────────────────────────── */
-main { padding:16px; max-width:900px; margin:0 auto; padding-bottom:40px; }
+/* MAIN */
+main{padding:16px;max-width:960px;margin:0 auto;padding-bottom:40px}
 
-/* ── SCAN BUTTON HERO ─────────────────────────── */
-.scan-hero {
-  background:var(--bg2); border:1px solid var(--line);
-  border-radius:var(--rad); padding:20px;
-  margin-bottom:16px;
-  display:flex; flex-direction:column; gap:14px;
+/* SCAN CARD */
+.scan-card{
+  background:var(--bg2);border:1px solid var(--line);border-radius:var(--rad);
+  box-shadow:var(--shadow);padding:18px;margin-bottom:16px;
 }
-.scan-hero-top { display:flex; align-items:center; justify-content:space-between; gap:12px; }
-.scan-info h2 { font-family:var(--font-d); font-size:16px; font-weight:700; margin-bottom:3px; }
-.scan-info p { font-size:11px; color:var(--ink2); line-height:1.6; }
-.scan-btn {
-  background:var(--g); color:#0a0b0d;
-  border:none; border-radius:var(--rad-sm);
-  padding:11px 22px; font-size:13px; font-weight:700;
-  font-family:var(--font-d); cursor:pointer;
-  display:flex; align-items:center; gap:7px;
-  white-space:nowrap; flex-shrink:0;
-  transition:all .15s; letter-spacing:-.01em;
+.scan-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.scan-title{font-size:16px;font-weight:700;margin-bottom:4px}
+.scan-sub{font-size:12px;color:var(--ink2);line-height:1.6}
+.scan-sub strong{color:var(--g);font-weight:600}
+.scan-btn{
+  background:var(--g);color:#fff;border:none;border-radius:var(--rad-sm);
+  padding:11px 22px;font-size:13px;font-weight:600;font-family:var(--font);
+  cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap;
+  transition:all .15s;flex-shrink:0;
 }
-.scan-btn:hover { background:#18a876; transform:translateY(-1px); }
-.scan-btn:active { transform:none; }
-.scan-btn:disabled { background:var(--bg4); color:var(--ink3); cursor:default; transform:none; }
-.scan-btn .btn-icon { font-size:15px; }
+.scan-btn:hover{background:#0b8a60;box-shadow:0 4px 12px rgba(13,158,110,.3)}
+.scan-btn:disabled{background:var(--bg4);color:var(--ink3);cursor:default;box-shadow:none}
 
-/* ── PROGRESS ─────────────────────────────────── */
-.progress-wrap { display:none; }
-.progress-wrap.visible { display:block; }
-.progress-bar-track {
-  height:3px; background:var(--bg4); border-radius:2px; overflow:hidden; margin-bottom:8px;
-}
-.progress-bar-fill {
-  height:100%; background:var(--g); border-radius:2px;
-  transition:width .3s ease; width:0%;
-}
-.progress-label { font-size:11px; color:var(--ink2); display:flex; justify-content:space-between; }
+/* PROGRESS */
+.progress-wrap{display:none;margin-top:14px}
+.progress-wrap.show{display:block}
+.progress-track{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;margin-bottom:8px}
+.progress-fill{height:100%;background:var(--g);border-radius:3px;transition:width .4s ease;width:0%}
+.progress-row{display:flex;justify-content:space-between;font-size:11px;color:var(--ink2)}
+.progress-note{font-size:11px;color:var(--g);font-weight:600;margin-top:4px}
 
-/* ── METRICS ROW ──────────────────────────────── */
-.metrics {
-  display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:16px;
-}
-.metric {
-  background:var(--bg2); border:1px solid var(--line);
-  border-radius:var(--rad); padding:12px 14px;
-}
-.metric-label { font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink3); margin-bottom:5px; }
-.metric-value { font-family:var(--font-d); font-size:20px; font-weight:800; letter-spacing:-.02em; line-height:1; }
-.metric-sub { font-size:10px; color:var(--ink3); margin-top:3px; }
-.green { color:var(--g); } .red { color:var(--r); } .amber { color:var(--y); }
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.metric{background:var(--bg2);border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow);padding:13px 15px}
+.metric-lbl{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px;font-weight:600}
+.metric-val{font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.metric-sub{font-size:11px;color:var(--ink3);margin-top:3px}
+.green{color:var(--g)}.red{color:var(--r)}.amber{color:var(--y)}
 
-/* ── TABS ─────────────────────────────────────── */
-.tabs {
-  display:flex; gap:0; margin-bottom:16px;
-  background:var(--bg2); border:1px solid var(--line);
-  border-radius:var(--rad); padding:4px; overflow:hidden;
-}
-.tab-btn {
-  flex:1; padding:9px 12px; border-radius:var(--rad-sm);
-  font-size:12px; font-weight:700; font-family:var(--font-d);
-  cursor:pointer; background:transparent; border:none; color:var(--ink3);
-  transition:all .15s; letter-spacing:-.01em;
-}
-.tab-btn.active { background:var(--bg4); color:var(--ink); }
+/* TABS */
+.tabs{display:flex;background:var(--bg2);border:1px solid var(--line);border-radius:var(--rad);padding:4px;margin-bottom:14px;box-shadow:var(--shadow)}
+.tab-btn{flex:1;padding:9px;border-radius:var(--rad-sm);font-size:13px;font-weight:600;font-family:var(--font);cursor:pointer;background:transparent;border:none;color:var(--ink3);transition:all .15s}
+.tab-btn.active{background:var(--bg3);color:var(--ink);box-shadow:var(--shadow)}
 
-/* ── STOCK GRID ───────────────────────────────── */
-.stock-grid {
-  display:grid; gap:10px;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-}
+/* SECTION HEADER */
+.section-hdr{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.section-title{font-size:14px;font-weight:700;color:var(--ink)}
+.count-badge{font-size:11px;font-weight:600;padding:2px 10px;border-radius:20px}
+.count-long{background:var(--g-bg);color:var(--g);border:1px solid var(--g-bd)}
+.count-short{background:var(--r-bg);color:var(--r);border:1px solid var(--r-bd)}
+.count-amber{background:var(--y-bg);color:var(--y);border:1px solid var(--y-bd)}
 
-/* ── STOCK CARD ───────────────────────────────── */
-.stock-card {
-  background:var(--bg2); border:1px solid var(--line);
-  border-radius:var(--rad); padding:14px;
-  transition:border-color .15s, transform .15s;
-  cursor:pointer; position:relative; overflow:hidden;
-}
-.stock-card::before {
-  content:''; position:absolute; left:0; top:0; bottom:0;
-  width:3px; border-radius:3px 0 0 3px;
-}
-.stock-card.long::before { background:var(--g); }
-.stock-card.short::before { background:var(--r); }
-.stock-card.unanimous { border-color:rgba(232,184,58,0.3); }
-.stock-card.unanimous::before { background:var(--y); }
-.stock-card:hover { border-color:var(--line2); transform:translateY(-1px); }
-.stock-card:active { transform:none; }
+/* GRID */
+.stock-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
 
-.card-row1 { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:10px; }
-.card-sym { font-family:var(--font-d); font-size:18px; font-weight:800; letter-spacing:-.02em; line-height:1; }
-.card-sym-sub { font-size:10px; color:var(--ink3); margin-top:3px; font-family:var(--font-m); }
-.dir-chip {
-  font-size:10px; font-weight:700; padding:4px 10px; border-radius:20px;
-  letter-spacing:.06em; font-family:var(--font-d);
+/* STOCK CARD */
+.stock-card{
+  background:var(--bg2);border:1px solid var(--line);border-radius:var(--rad);
+  box-shadow:var(--shadow);padding:14px;cursor:pointer;
+  transition:box-shadow .15s,transform .15s;
+  position:relative;overflow:hidden;
 }
-.dir-long { background:var(--g2); color:var(--g); }
-.dir-short { background:var(--r2); color:var(--r); }
-.unani-chip {
-  font-size:9px; font-weight:700; padding:3px 8px; border-radius:20px;
-  background:var(--y2); color:var(--y); letter-spacing:.04em; margin-left:5px;
+.stock-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px}
+.stock-card.long::before{background:var(--g)}
+.stock-card.short::before{background:var(--r)}
+.stock-card.unanimous{border-color:var(--y-bd)}
+.stock-card.unanimous::before{background:var(--y)}
+.stock-card:hover{box-shadow:var(--shadow2);transform:translateY(-1px)}
+.stock-card:active{transform:none}
+
+/* CARD TOP */
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.card-sym{font-size:17px;font-weight:800;letter-spacing:-.02em;line-height:1;color:var(--ink)}
+.card-meta{font-size:11px;color:var(--ink3);margin-top:3px;font-weight:500}
+.dir-chip{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.04em;flex-shrink:0}
+.dir-long{background:var(--g-bg);color:var(--g);border:1px solid var(--g-bd)}
+.dir-short{background:var(--r-bg);color:var(--r);border:1px solid var(--r-bd)}
+
+/* SETUP & HOLD TAGS */
+.tags{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
+.tag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;letter-spacing:.03em}
+.tag-setup{background:var(--b-bg);color:var(--b);border:1px solid var(--b-bd)}
+.tag-hold{background:var(--y-bg);color:var(--y);border:1px solid var(--y-bd)}
+.tag-rr{background:var(--bg3);color:var(--ink2);border:1px solid var(--line2)}
+.tag-unani{background:var(--y-bg);color:var(--y);border:1px solid var(--y-bd)}
+
+/* SCORE BAR */
+.score-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.score-track{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.score-fill-g{height:100%;border-radius:3px;background:var(--g)}
+.score-fill-r{height:100%;border-radius:3px;background:var(--r)}
+.score-num{font-size:12px;font-weight:700;min-width:30px;text-align:right}
+
+/* LEVELS */
+.levels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px}
+.level{background:var(--bg3);border-radius:var(--rad-xs);padding:8px;text-align:center;border:1px solid var(--line)}
+.level-lbl{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:3px;font-weight:600}
+.level-val{font-size:14px;font-weight:700;letter-spacing:-.01em}
+.level-pct{font-size:10px;font-weight:600;margin-top:1px}
+.lv-cmp .level-val{color:var(--ink)}
+.lv-sl .level-val{color:var(--r)}
+.lv-sl .level-pct{color:var(--r);opacity:.8}
+.lv-tp .level-val{color:var(--g)}
+.lv-tp .level-pct{color:var(--g);opacity:.8}
+
+/* STRAT BREAKDOWN */
+.expand-btn{
+  width:100%;background:none;border:none;color:var(--ink3);
+  font-size:11px;cursor:pointer;padding:6px 0 0;text-align:left;
+  font-family:var(--font);font-weight:600;display:flex;align-items:center;gap:4px;
 }
+.strat-detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.strat-detail.open{display:block}
+.strat-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.strat-name{font-size:11px;color:var(--ink2);width:85px;flex-shrink:0;font-weight:500}
+.mini-track{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.mini-fill-g{height:100%;border-radius:2px;background:var(--g)}
+.mini-fill-r{height:100%;border-radius:2px;background:var(--r)}
+.strat-pct{font-size:10px;min-width:28px;text-align:right;color:var(--ink2);font-weight:600}
+.strat-tick{font-size:10px;min-width:12px;font-weight:700}
+.tick-y{color:var(--g)}.tick-n{color:var(--ink3)}
 
-/* score bar */
-.score-row { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
-.score-track { flex:1; height:5px; background:var(--bg4); border-radius:3px; overflow:hidden; }
-.score-fill { height:100%; border-radius:3px; }
-.fill-g { background:var(--g); }
-.fill-r { background:var(--r); }
-.score-num { font-size:12px; font-weight:700; min-width:32px; font-family:var(--font-d); }
+/* CHG */
+.chg-pos{color:var(--g);font-weight:600}
+.chg-neg{color:var(--r);font-weight:600}
 
-/* price levels */
-.levels { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:10px; }
-.level {
-  background:var(--bg3); border-radius:var(--rad-sm); padding:7px 8px; text-align:center;
-  border:1px solid var(--line);
-}
-.level-lbl { font-size:9px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink3); margin-bottom:3px; }
-.level-val { font-size:13px; font-weight:700; font-family:var(--font-d); letter-spacing:-.01em; }
-.level-cmp .level-val { color:var(--ink); }
-.level-sl .level-val { color:var(--r); }
-.level-tp .level-val { color:var(--g); }
+/* EMPTY */
+.empty{text-align:center;padding:50px 20px;color:var(--ink3);grid-column:1/-1}
+.empty-icon{font-size:32px;margin-bottom:10px;opacity:.3}
+.empty-title{font-size:15px;font-weight:700;color:var(--ink2);margin-bottom:5px}
+.empty-sub{font-size:12px;line-height:1.7}
 
-/* strategy pills */
-.strat-row { display:flex; align-items:center; gap:6px; margin-bottom:5px; }
-.strat-name { font-size:10px; color:var(--ink3); width:80px; flex-shrink:0; font-family:var(--font-m); }
-.mini-track { flex:1; height:3px; background:var(--bg4); border-radius:2px; overflow:hidden; }
-.mini-fill { height:100%; border-radius:2px; }
-.strat-pct { font-size:10px; min-width:28px; text-align:right; color:var(--ink2); font-family:var(--font-m); }
-.strat-tick { font-size:10px; min-width:12px; }
-.tick-yes { color:var(--g); } .tick-no { color:var(--ink3); }
-
-/* expand toggle */
-.expand-btn {
-  width:100%; background:none; border:none; color:var(--ink3);
-  font-size:10px; cursor:pointer; padding:6px 0 0; text-align:left;
-  font-family:var(--font-m); letter-spacing:.04em;
-  display:flex; align-items:center; gap:4px;
-}
-.strat-detail { display:none; margin-top:8px; }
-.strat-detail.open { display:block; }
-
-/* ── EMPTY / ERROR STATES ─────────────────────── */
-.empty {
-  text-align:center; padding:60px 20px; color:var(--ink3);
-  grid-column:1/-1;
-}
-.empty-icon { font-size:36px; margin-bottom:12px; opacity:.4; }
-.empty-title { font-family:var(--font-d); font-size:16px; font-weight:700; margin-bottom:6px; color:var(--ink2); }
-.empty-sub { font-size:12px; line-height:1.7; }
-
-/* ── TOAST ────────────────────────────────────── */
-.toast {
-  position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
-  background:var(--bg4); border:1px solid var(--line2);
-  border-radius:var(--rad); padding:12px 20px;
-  font-size:12px; color:var(--ink); white-space:nowrap;
-  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
-  z-index:999; box-shadow:0 8px 32px rgba(0,0,0,.4);
-}
-.toast.show { transform:translateX(-50%) translateY(0); }
-
-/* ── INSTALL BANNER ───────────────────────────── */
-.install-banner {
-  background:var(--g3); border:1px solid rgba(29,190,136,.2);
-  border-radius:var(--rad); padding:12px 14px;
-  display:flex; align-items:center; justify-content:space-between; gap:10px;
-  margin-bottom:16px; font-size:12px; color:var(--ink2); line-height:1.5;
-}
-.install-banner strong { color:var(--g); display:block; font-family:var(--font-d); font-size:13px; }
-.install-btn {
-  background:var(--g); color:#0a0b0d; border:none;
-  border-radius:var(--rad-sm); padding:7px 14px;
-  font-size:12px; font-weight:700; font-family:var(--font-d);
-  cursor:pointer; flex-shrink:0; white-space:nowrap;
+/* AUTO SCAN INFO */
+.auto-info{
+  background:var(--g-bg);border:1px solid var(--g-bd);border-radius:var(--rad);
+  padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--g);
+  display:flex;align-items:center;gap:8px;font-weight:500;
 }
 
-/* ── DISCLAIMER ───────────────────────────────── */
-.disclaimer {
-  margin-top:24px; padding:14px; background:var(--bg2);
-  border:1px solid var(--line); border-radius:var(--rad);
-  font-size:11px; color:var(--ink3); line-height:1.7; text-align:center;
+/* DISCLAIMER */
+.disclaimer{margin-top:20px;padding:14px;background:var(--bg2);border:1px solid var(--line);border-radius:var(--rad);font-size:11px;color:var(--ink3);line-height:1.7;text-align:center}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--ink);color:#fff;border-radius:var(--rad-sm);padding:11px 18px;
+  font-size:12px;font-weight:500;white-space:nowrap;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1);z-index:999;
+  box-shadow:var(--shadow2);
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:500px){
+  main{padding:12px}
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .stock-grid{grid-template-columns:1fr}
+  .scan-top{flex-direction:column}
+  .scan-btn{width:100%;justify-content:center}
+  .metric-val{font-size:17px}
 }
 
-/* ── RESPONSIVE ───────────────────────────────── */
-@media(max-width:480px) {
-  main { padding:12px; }
-  .metrics { grid-template-columns:repeat(2,1fr); }
-  .metric-value { font-size:17px; }
-  .stock-grid { grid-template-columns:1fr; }
-  .scan-hero-top { flex-direction:column; align-items:flex-start; }
-  .scan-btn { width:100%; justify-content:center; }
-}
-
-/* ── SPINNER ──────────────────────────────────── */
-@keyframes spin { to { transform:rotate(360deg); } }
-.spinner {
-  width:14px; height:14px; border:2px solid rgba(10,11,13,.3);
-  border-top-color:#0a0b0d; border-radius:50%;
-  animation:spin .7s linear infinite; display:inline-block;
-}
-
-/* ── PULSE DOT ────────────────────────────────── */
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-.pulse { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--g); animation:pulse 2s infinite; margin-right:5px; vertical-align:middle; }
-
-/* ── FADE IN ──────────────────────────────────── */
-@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
-.fade-up { animation:fadeUp .3s ease forwards; }
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fade-up{animation:fadeUp .25s ease forwards}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
 </style>
 </head>
 <body>
@@ -285,257 +232,258 @@ main { padding:16px; max-width:900px; margin:0 auto; padding-bottom:40px; }
 <header>
   <div>
     <div class="logo">Signal<em>Desk</em></div>
-    <div class="logo-sub">Nifty 500 · All 5 strategies</div>
+    <div class="logo-tag">Nifty 500 · Swing Scanner</div>
   </div>
   <div class="header-right">
-    <div class="last-scan" id="last-scan-label">No scan yet</div>
+    <div class="live-badge" id="live-badge" style="display:none">
+      <span class="pulse"></span> Live
+    </div>
+    <div style="font-size:11px;color:var(--ink3);text-align:right;line-height:1.5" id="last-scan-label">—</div>
   </div>
 </header>
 
 <main>
-  <!-- Install banner (shown on mobile if not installed) -->
-  <div class="install-banner" id="install-banner" style="display:none">
-    <div><strong>Add to Home Screen</strong>Open like an app — works offline too</div>
-    <button class="install-btn" onclick="triggerInstall()">Install</button>
-  </div>
-
-  <!-- Scan hero -->
-  <div class="scan-hero">
-    <div class="scan-hero-top">
-      <div class="scan-info">
-        <h2>Nifty 500 Scanner</h2>
-        <p>Runs all 5 strategies · Shows CMP, Stop Loss &amp; Target<br>4/5 agreement · 75% confidence threshold</p>
+  <!-- Scan card -->
+  <div class="scan-card">
+    <div class="scan-top">
+      <div>
+        <div class="scan-title">Nifty 500 Swing Scanner</div>
+        <div class="scan-sub">
+          Finds stocks with <strong>5–15% monthly potential</strong> · CMP · Stop Loss · Target · Holding period<br>
+          Auto-scans at 9:15 AM IST daily · 4/5 strategies · 75% confidence
+        </div>
       </div>
       <button class="scan-btn" id="scan-btn" onclick="startScan()">
-        <span class="btn-icon">◎</span> Scan Now
+        ◎ Scan Now
       </button>
     </div>
     <div class="progress-wrap" id="progress-wrap">
-      <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-fill"></div></div>
-      <div class="progress-label">
-        <span id="progress-text">Scanning...</span>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-row">
+        <span id="progress-text">Starting scan...</span>
         <span id="progress-pct">0%</span>
       </div>
+      <div class="progress-note" id="progress-note"></div>
     </div>
+  </div>
+
+  <!-- Auto scan info -->
+  <div class="auto-info" id="auto-info" style="display:none">
+    ✓ Auto-scan runs at 9:15 AM IST every weekday. Results update automatically.
   </div>
 
   <!-- Metrics -->
   <div class="metrics" id="metrics" style="display:none">
-    <div class="metric"><div class="metric-label">Scanned</div><div class="metric-value" id="m-scanned">—</div><div class="metric-sub">Nifty 500</div></div>
-    <div class="metric"><div class="metric-label">Signals</div><div class="metric-value" id="m-signals">—</div><div class="metric-sub" id="m-signals-sub">—</div></div>
-    <div class="metric"><div class="metric-label">Top Long</div><div class="metric-value green" id="m-top-long">—</div><div class="metric-sub" id="m-top-long-sym">—</div></div>
-    <div class="metric"><div class="metric-label">Top Short</div><div class="metric-value red" id="m-top-short">—</div><div class="metric-sub" id="m-top-short-sym">—</div></div>
+    <div class="metric"><div class="metric-lbl">Scanned</div><div class="metric-val" id="m-scanned">—</div><div class="metric-sub">Nifty 500</div></div>
+    <div class="metric"><div class="metric-lbl">Signals</div><div class="metric-val" id="m-signals">—</div><div class="metric-sub" id="m-signals-sub">—</div></div>
+    <div class="metric"><div class="metric-lbl">Top Long</div><div class="metric-val green" id="m-tl">—</div><div class="metric-sub" id="m-tl-sym">—</div></div>
+    <div class="metric"><div class="metric-lbl">Top Short</div><div class="metric-val red" id="m-ts">—</div><div class="metric-sub" id="m-ts-sym">—</div></div>
   </div>
 
   <!-- Tabs -->
   <div class="tabs" id="tabs" style="display:none">
-    <button class="tab-btn active" onclick="switchTab('longs',this)">↑ Longs <span id="long-count"></span></button>
-    <button class="tab-btn" onclick="switchTab('shorts',this)">↓ Shorts <span id="short-count"></span></button>
+    <button class="tab-btn active" onclick="switchTab('longs',this)">↑ Long Swings <span id="lc"></span></button>
+    <button class="tab-btn" onclick="switchTab('shorts',this)">↓ Short Swings <span id="sc"></span></button>
   </div>
 
-  <!-- Stock grids -->
-  <div class="stock-grid" id="longs-grid"></div>
-  <div class="stock-grid" id="shorts-grid" style="display:none"></div>
+  <!-- Grids -->
+  <div id="longs-section">
+    <div class="stock-grid" id="longs-grid"></div>
+  </div>
+  <div id="shorts-section" style="display:none">
+    <div class="stock-grid" id="shorts-grid"></div>
+  </div>
 
-  <!-- Disclaimer -->
   <div class="disclaimer" id="disclaimer" style="display:none">
     ⚠ For informational purposes only. Not financial advice.<br>
-    4/5 strategies at 75% confidence · 1.5× ATR stop · 1:2 risk-reward · Always verify before trading.
+    Swing setups filtered for 5–15% monthly potential · 1.5× ATR stop · Always verify before trading.
   </div>
 </main>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ── State ──────────────────────────────────────
 let scanInterval = null;
-let deferredPrompt = null;
 let currentTab = 'longs';
-let lastData = null;
-
-// ── PWA Install ────────────────────────────────
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById('install-banner').style.display = 'flex';
-});
-function triggerInstall() {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(() => {
-      document.getElementById('install-banner').style.display = 'none';
-      deferredPrompt = null;
-    });
-  }
-}
-window.addEventListener('appinstalled', () => {
-  document.getElementById('install-banner').style.display = 'none';
-  toast('✓ SignalDesk installed!');
-});
-
-// ── iOS install hint ───────────────────────────
-function isIOS() { return /iphone|ipad|ipod/i.test(navigator.userAgent); }
-function isInStandaloneMode() { return window.matchMedia('(display-mode:standalone)').matches || window.navigator.standalone; }
-if (isIOS() && !isInStandaloneMode()) {
-  const b = document.getElementById('install-banner');
-  b.style.display = 'flex';
-  b.querySelector('strong').textContent = 'Add to Home Screen';
-  b.querySelector('div').innerHTML = '<strong>Add to Home Screen</strong>Tap the Share button → "Add to Home Screen"';
-  b.querySelector('.install-btn').style.display = 'none';
-}
 
 // ── Scan ───────────────────────────────────────
 async function startScan() {
   const btn = document.getElementById('scan-btn');
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span> Starting...';
-
   try {
-    const res = await fetch('/api/scan', { method: 'POST' });
-    const data = await res.json();
-    if (data.status === 'started' || data.status === 'running') {
-      showProgress();
-      pollProgress();
-      toast('◎ Scan started — scanning 500 stocks...');
+    const res = await fetch('/api/scan', {method:'POST'});
+    const d = await res.json();
+    if (d.status === 'started' || d.status === 'running') {
+      document.getElementById('progress-wrap').classList.add('show');
+      document.getElementById('live-badge').style.display = 'flex';
+      startPolling();
+      toast('◎ Scanning Nifty 500 for swing setups...');
     }
   } catch(e) {
     btn.disabled = false;
-    btn.innerHTML = '<span class="btn-icon">◎</span> Scan Now';
-    toast('⚠ Could not connect. Is the server running?');
+    btn.innerHTML = '◎ Scan Now';
+    toast('⚠ Connection error — try again');
   }
 }
 
-function showProgress() {
-  document.getElementById('progress-wrap').classList.add('visible');
+function startPolling() {
+  if (scanInterval) clearInterval(scanInterval);
+  scanInterval = setInterval(pollProgress, 2500);
 }
 
-function pollProgress() {
-  scanInterval = setInterval(async () => {
-    try {
-      const res = await fetch('/api/progress');
-      const d = await res.json();
-      const pct = d.pct || 0;
-      document.getElementById('progress-fill').style.width = pct + '%';
-      document.getElementById('progress-pct').textContent = pct + '%';
-      document.getElementById('progress-text').textContent =
-        `Scanning ${d.progress} of ${d.total} stocks...`;
+async function pollProgress() {
+  try {
+    const res = await fetch('/api/progress');
+    const d = await res.json();
+    const pct = d.pct || 0;
 
-      if (!d.running && d.progress > 0) {
-        clearInterval(scanInterval);
-        await loadResults();
-      }
-    } catch(e) { /* retry */ }
-  }, 1200);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-pct').textContent = pct + '%';
+    document.getElementById('progress-text').textContent =
+      `Scanning ${d.progress} of ${d.total} stocks...`;
+
+    if (d.partial_count > 0) {
+      document.getElementById('progress-note').textContent =
+        `${d.partial_count} swing signals found so far`;
+      // Show live partial results
+      showResults({
+        scanned: d.scanned,
+        total_signals: d.partial_count,
+        longs: d.longs || [],
+        shorts: d.shorts || [],
+        date: new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}),
+        time: 'Scanning...'
+      }, true);
+    }
+
+    if (!d.running && d.progress > 0) {
+      clearInterval(scanInterval);
+      await loadFinalResults();
+    }
+  } catch(e) { /* retry next tick */ }
 }
 
-async function loadResults() {
+async function loadFinalResults() {
   try {
     const res = await fetch('/api/results');
     if (!res.ok) return;
-    const data = await res.json();
-    lastData = data;
-    renderResults(data);
-    document.getElementById('progress-wrap').classList.remove('visible');
+    const d = await res.json();
+    showResults(d, false);
+    document.getElementById('progress-wrap').classList.remove('show');
+    document.getElementById('live-badge').style.display = 'none';
+    document.getElementById('auto-info').style.display = 'flex';
     const btn = document.getElementById('scan-btn');
     btn.disabled = false;
-    btn.innerHTML = '<span class="btn-icon">↻</span> Re-scan';
-    document.getElementById('last-scan-label').innerHTML =
-      `<span class="pulse"></span>${data.time}`;
-    toast(`✓ Done — ${data.total_signals} signals found`);
-  } catch(e) {
-    toast('⚠ Error loading results');
-  }
+    btn.innerHTML = '↻ Re-scan';
+    document.getElementById('last-scan-label').textContent = d.time;
+    document.getElementById('progress-note').textContent = '';
+    toast(`✓ Done — ${d.total_signals} swing signals found across ${d.scanned} stocks`);
+  } catch(e) { toast('⚠ Error loading results'); }
 }
 
 // ── Render ─────────────────────────────────────
-function renderResults(data) {
+function showResults(data, isPartial) {
   // Metrics
-  document.getElementById('metrics').style.display = 'grid';
-  document.getElementById('m-scanned').textContent = data.scanned;
-  document.getElementById('m-signals').textContent = data.total_signals;
-  document.getElementById('m-signals-sub').textContent =
-    `${data.longs.length} long · ${data.shorts.length} short`;
+  const m = document.getElementById('metrics');
+  m.style.display = 'grid';
+  document.getElementById('m-scanned').textContent = isPartial ? data.scanned + '...' : data.scanned;
+  document.getElementById('m-signals').textContent = data.total_signals + (isPartial?'...':'');
+  document.getElementById('m-signals-sub').textContent = `${data.longs.length} long · ${data.shorts.length} short`;
   if (data.longs.length) {
-    document.getElementById('m-top-long').textContent = data.longs[0].score + '%';
-    document.getElementById('m-top-long-sym').textContent = data.longs[0].symbol;
+    document.getElementById('m-tl').textContent = data.longs[0].target_pct + '%↑';
+    document.getElementById('m-tl-sym').textContent = data.longs[0].symbol;
   }
   if (data.shorts.length) {
-    document.getElementById('m-top-short').textContent = data.shorts[0].score + '%';
-    document.getElementById('m-top-short-sym').textContent = data.shorts[0].symbol;
+    document.getElementById('m-ts').textContent = data.shorts[0].target_pct + '%↓';
+    document.getElementById('m-ts-sym').textContent = data.shorts[0].symbol;
   }
 
   // Tabs
   document.getElementById('tabs').style.display = 'flex';
-  document.getElementById('long-count').textContent = `(${data.longs.length})`;
-  document.getElementById('short-count').textContent = `(${data.shorts.length})`;
+  document.getElementById('lc').textContent = `(${data.longs.length})`;
+  document.getElementById('sc').textContent = `(${data.shorts.length})`;
 
   // Cards
-  document.getElementById('longs-grid').innerHTML =
-    data.longs.length ? data.longs.map((s,i) => stockCard(s,i)).join('') : emptyState('No long setups today','Try lowering confidence to 60% in the server config.');
-  document.getElementById('shorts-grid').innerHTML =
-    data.shorts.length ? data.shorts.map((s,i) => stockCard(s,i)).join('') : emptyState('No short setups today','Market may be broadly bullish today.');
+  const lg = document.getElementById('longs-grid');
+  const sg = document.getElementById('shorts-grid');
+  lg.innerHTML = data.longs.length
+    ? data.longs.map((s,i) => card(s,i,'long')).join('')
+    : emptyState('No long swing setups yet', isPartial ? 'Still scanning...' : 'Market may be broadly weak today.');
+  sg.innerHTML = data.shorts.length
+    ? data.shorts.map((s,i) => card(s,i,'short')).join('')
+    : emptyState('No short swing setups yet', isPartial ? 'Still scanning...' : 'Market may be broadly bullish.');
 
   document.getElementById('disclaimer').style.display = 'block';
 
-  // Animate cards
-  document.querySelectorAll('.stock-card').forEach((c,i) => {
-    c.style.animationDelay = (i * 40) + 'ms';
-    c.classList.add('fade-up');
-  });
+  // Animate new cards
+  if (!isPartial) {
+    document.querySelectorAll('.stock-card').forEach((c,i) => {
+      c.style.animationDelay = (i*35)+'ms';
+      c.classList.add('fade-up');
+    });
+  }
 }
 
-function stockCard(s, idx) {
-  const isLong = s.direction === 'LONG';
-  const dirClass = isLong ? 'long' : 'short';
-  const fillClass = isLong ? 'fill-g' : 'fill-r';
-  const scoreColor = isLong ? 'green' : 'red';
-  const chgColor = s.chg >= 0 ? 'green' : 'red';
-  const unani = s.unanimous ? '<span class="unani-chip">⚡ 5/5</span>' : '';
+function card(s, idx, side) {
+  const isLong = side === 'long';
+  const fillCls = isLong ? 'score-fill-g' : 'score-fill-r';
+  const miniCls = isLong ? 'mini-fill-g' : 'mini-fill-r';
+  const chgCls  = s.chg >= 0 ? 'chg-pos' : 'chg-neg';
+  const unani   = s.unanimous ? `<span class="tag tag-unani">⚡ 5/5 Unanimous</span>` : '';
 
   const strats = s.strategies.map(st => {
     const val = isLong ? st.buy : st.sell;
     const meets = val >= 75;
     return `<div class="strat-row">
       <span class="strat-name">${st.name}</span>
-      <div class="mini-track"><div class="mini-fill ${fillClass}" style="width:${val}%"></div></div>
+      <div class="mini-track"><div class="${miniCls}" style="width:${val}%"></div></div>
       <span class="strat-pct">${val}%</span>
-      <span class="strat-tick ${meets?'tick-yes':'tick-no'}">${meets?'✓':'–'}</span>
+      <span class="strat-tick ${meets?'tick-y':'tick-n'}">${meets?'✓':'–'}</span>
     </div>`;
   }).join('');
 
-  return `<div class="stock-card ${dirClass} ${s.unanimous?'unanimous':''}" onclick="toggleDetail(${idx},'${s.direction}')">
-    <div class="card-row1">
+  return `<div class="stock-card ${side} ${s.unanimous?'unanimous':''}" onclick="toggleDetail(${idx},'${side}')">
+    <div class="card-top">
       <div>
-        <div class="card-sym">${s.symbol}${unani}</div>
-        <div class="card-sym-sub">${s.agree}/5 agree · vol ${s.vol_ratio}×</div>
+        <div class="card-sym">${s.symbol}</div>
+        <div class="card-meta">${s.agree}/5 agree · Vol ${s.vol_ratio}× avg · <span class="${chgCls}">${s.chg>=0?'+':''}${s.chg}% today</span></div>
       </div>
-      <span class="dir-chip dir-${dirClass}">${s.direction}</span>
+      <span class="dir-chip dir-${side}">${s.direction}</span>
     </div>
+
+    <div class="tags">
+      <span class="tag tag-setup">${s.setup}</span>
+      <span class="tag tag-hold">⏱ ${s.hold} · ${s.hold_label}</span>
+      <span class="tag tag-rr">RR ${s.rr}:1</span>
+      ${unani}
+    </div>
+
     <div class="score-row">
-      <div class="score-track"><div class="score-fill ${fillClass}" style="width:${s.score}%"></div></div>
-      <span class="score-num ${scoreColor}">${s.score}%</span>
+      <div class="score-track"><div class="${fillCls}" style="width:${s.score}%"></div></div>
+      <span class="score-num ${isLong?'green':'red'}">${s.score}%</span>
     </div>
+
     <div class="levels">
-      <div class="level level-cmp">
+      <div class="level lv-cmp">
         <div class="level-lbl">CMP</div>
         <div class="level-val">₹${s.cmp}</div>
+        <div class="level-pct" style="color:var(--ink3)">entry</div>
       </div>
-      <div class="level level-sl">
+      <div class="level lv-sl">
         <div class="level-lbl">Stop Loss</div>
         <div class="level-val">₹${s.sl}</div>
+        <div class="level-pct">−${s.sl_pct}%</div>
       </div>
-      <div class="level level-tp">
+      <div class="level lv-tp">
         <div class="level-lbl">Target</div>
         <div class="level-val">₹${s.target}</div>
+        <div class="level-pct">+${s.target_pct}%</div>
       </div>
     </div>
-    <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:8px">
-      <span style="color:var(--ink3)">ATR: ₹${s.atr}</span>
-      <span class="${chgColor}">${s.chg>=0?'+':''}${s.chg}% today</span>
-    </div>
-    <button class="expand-btn" id="expand-${idx}-${s.direction}">▸ Strategy breakdown</button>
-    <div class="strat-detail" id="detail-${idx}-${s.direction}">${strats}</div>
+
+    <button class="expand-btn" id="ebtn-${idx}-${side}">▸ Strategy breakdown</button>
+    <div class="strat-detail" id="edet-${idx}-${side}">${strats}</div>
   </div>`;
 }
 
@@ -547,12 +495,12 @@ function emptyState(title, sub) {
   </div>`;
 }
 
-function toggleDetail(idx, dir) {
-  const detail = document.getElementById(`detail-${idx}-${dir}`);
-  const btn = document.getElementById(`expand-${idx}-${dir}`);
-  if (!detail) return;
-  const open = detail.classList.toggle('open');
-  btn.textContent = (open ? '▾ ' : '▸ ') + 'Strategy breakdown';
+function toggleDetail(idx, side) {
+  const det = document.getElementById(`edet-${idx}-${side}`);
+  const btn = document.getElementById(`ebtn-${idx}-${side}`);
+  if (!det) return;
+  const open = det.classList.toggle('open');
+  btn.textContent = (open?'▾ ':'▸ ') + 'Strategy breakdown';
 }
 
 // ── Tabs ───────────────────────────────────────
@@ -560,19 +508,19 @@ function switchTab(tab, el) {
   currentTab = tab;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('longs-grid').style.display = tab === 'longs' ? 'grid' : 'none';
-  document.getElementById('shorts-grid').style.display = tab === 'shorts' ? 'grid' : 'none';
+  document.getElementById('longs-section').style.display  = tab==='longs'  ? 'block' : 'none';
+  document.getElementById('shorts-section').style.display = tab==='shorts' ? 'block' : 'none';
 }
 
 // ── Toast ──────────────────────────────────────
-function toast(msg, duration=3000) {
+function toast(msg, dur=3500) {
   const el = document.getElementById('toast');
   el.textContent = msg;
   el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), duration);
+  setTimeout(() => el.classList.remove('show'), dur);
 }
 
-// ── Check for existing results on load ────────
+// ── On load — check for existing results ──────
 window.addEventListener('DOMContentLoaded', async () => {
   try {
     const res = await fetch('/api/status');
@@ -580,14 +528,14 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (s.running) {
       document.getElementById('scan-btn').disabled = true;
       document.getElementById('scan-btn').innerHTML = '<span class="spinner"></span> Scanning...';
-      showProgress();
-      pollProgress();
+      document.getElementById('progress-wrap').classList.add('show');
+      document.getElementById('live-badge').style.display = 'flex';
+      startPolling();
     } else if (s.has_data) {
-      await loadResults();
-      document.getElementById('last-scan-label').innerHTML =
-        `<span class="pulse"></span>Last: ${new Date(s.timestamp).toLocaleTimeString()}`;
+      await loadFinalResults();
+      document.getElementById('auto-info').style.display = 'flex';
     }
-  } catch(e) { /* server not ready yet */ }
+  } catch(e) {}
 });
 </script>
 </body>
